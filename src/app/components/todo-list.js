@@ -24,7 +24,7 @@ export class TodoList extends LitElement {
     }
 
   sort() {
-    this.items = this.items.sort((a, b) => {
+    this.items.sort((a, b) => {
       return a > b ? 1 : -1
     })
   }
@@ -36,12 +36,19 @@ export class TodoList extends LitElement {
       }
     }
   }
+
+  handleInput(e) {
+    this.task = e.target.value;
+  }
+
   todoItem(task) {
+    debugger
     this.task = task
     return task
   }
 
-  createNewItem() {
+  createNewItem(task) {
+    debugger
     this.items = [...this.items, this.todoItem(this.task)];
     this.task = '';
   }
@@ -56,7 +63,7 @@ export class TodoList extends LitElement {
       )}
       <div class="itemsBlock">
         <input type="text" .value=${this.task} @input=${this.handleInput} @keypress=${this.handleKeyPress} />        
-        <button class="ToDo-Add" @click=${this.createNewItem} >Dodaj</button>
+        <button class="ToDo-Add" @click=${this.createNewItem.bind(this, this.task)} >Dodaj</button>
       </div>
       <button @click="${this.sort}">Sortuj</button>
     `;

@@ -4,7 +4,7 @@ import "./components/todo-list";
 class AppTodoList extends LitElement {
   constructor() {
     super();
-    this.tasks = ["2", "1"];
+    this.tasks = ["Testy jednostkowe", "Implementacja"];
   }
 
   render() {
