@@ -20,10 +20,17 @@ export class TodoList extends LitElement {
   static get styles() {
     return css`
         .itemsBlock {
-            margin-bottom: 20px;
+            margin-bottom: 5px;
         }
         .btnItem {
             margin-left: 10px;
+        }
+        .alert {
+          color: red;
+          font-size: 11px;
+        }
+        .alertBox {          
+          margin-bottom: 20px;
         }
         `
     }
@@ -43,7 +50,7 @@ export class TodoList extends LitElement {
     }
   }
 
-  handleInput(e) {
+  handleInput (e) {
     this.task = e.target.value;
   }
 
@@ -51,15 +58,24 @@ export class TodoList extends LitElement {
     this.shadowRoot.querySelector('input').value = ""
   }
 
-  todoItem(task) {
+  showAlert (task) {
+    this.shadowRoot.querySelector('.alert').innerHTML = "Wprowadź poprawnę nazwę"
+  }
+
+  todoItem (task) {
     this.task = task
     return task
   }
 
-  createNewItem() {
-    this.items = [...this.items, this.todoItem(this.task)]
-    this.task = ''    
-    this.clearInput()
+  createNewItem () {
+    if (this.task) {      
+      this.items = [...this.items, this.todoItem(this.task)]
+      this.task = ''    
+      this.clearInput()
+      this.shadowRoot.querySelector('.alert').innerHTML = ""
+    } else {
+      this.showAlert()
+    }
   }
 
   render() {
@@ -71,9 +87,12 @@ export class TodoList extends LitElement {
           `
       )}
       <div class="itemsBlock">
-        <input type="text" .value=${this.task} @input=${this.handleInput} @keypress=${this.handleKeyPress} />   
+        <input type="text" .value=${this.task} @input=${this.handleInput} @keypress=${this.handleKeyPress} />        
         <button class="ToDo-Add" @click=${this.createNewItem} >Dodaj</button>
       </div>
+      <div class="alertBox">  
+        <span class="alert"></span>
+      </div>  
       <button @click="${this.sort}">Sortuj</button>
     `;
   }
