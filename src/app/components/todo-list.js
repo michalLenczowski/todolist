@@ -30,8 +30,9 @@ export class TodoList extends LitElement {
 
   sort() {
     this.items.sort((a, b) => {
-      return a > b ? 1 : -1
+      return a.toLowerCase() > b.toLowerCase() ? 1 : -1
     })
+    this.items = [...this.items]
   }
 
   handleKeyPress(e) {
