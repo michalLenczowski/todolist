@@ -8,6 +8,11 @@ export class TodoList extends LitElement {
     };
   }
 
+  constructor () {
+    super()
+    this.task = ''
+  }
+
   deleteItem (idx) {
     this.items = this.items.filter((element, index) => index !== idx)
   }
@@ -31,7 +36,7 @@ export class TodoList extends LitElement {
 
   handleKeyPress(e) {
     if (e.target.value !== '') {
-      if (e.key === 'Enter') {
+      if (e.keyCode === 13) {
         this.createNewItem()
       }
     }
@@ -41,6 +46,10 @@ export class TodoList extends LitElement {
     this.task = e.target.value;
   }
 
+  clearInput () {
+    this.shadowRoot.querySelector('input').value = ""
+  }
+
   todoItem(task) {
     this.task = task
     return task
@@ -48,7 +57,8 @@ export class TodoList extends LitElement {
 
   createNewItem() {
     this.items = [...this.items, this.todoItem(this.task)]
-    this.task = ''
+    this.task = ''    
+    this.clearInput()
   }
 
   render() {
@@ -60,7 +70,7 @@ export class TodoList extends LitElement {
           `
       )}
       <div class="itemsBlock">
-        <input type="text" .value=${this.task} @input=${this.handleInput} @keypress=${this.handleKeyPress} />        
+        <input type="text" .value=${this.task} @input=${this.handleInput} @keypress=${this.handleKeyPress} />   
         <button class="ToDo-Add" @click=${this.createNewItem} >Dodaj</button>
       </div>
       <button @click="${this.sort}">Sortuj</button>
