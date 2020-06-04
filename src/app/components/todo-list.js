@@ -4,13 +4,16 @@ import "./todo-item";
 export class TodoList extends LitElement {
   static get properties() {
     return {
-      items: Array
+      items: Array,
+      showAlert: Boolean,
+      task: String
     };
   }
 
   constructor () {
     super()
     this.task = ''
+    this.showAlert = false
   }
 
   deleteItem (idx) {
@@ -54,27 +57,19 @@ export class TodoList extends LitElement {
     this.task = e.target.value;
   }
 
-  clearInput () {
-    this.shadowRoot.querySelector('input').value = ""
-  }
-
-  showAlert (task) {
-    this.shadowRoot.querySelector('.alert').innerHTML = "Wprowadź poprawnę nazwę"
-  }
-
   todoItem (task) {
     this.task = task
     return task
   }
 
   createNewItem () {
+    debugger
     if (this.task) {      
       this.items = [...this.items, this.todoItem(this.task)]
-      this.task = ''    
-      this.clearInput()
-      this.shadowRoot.querySelector('.alert').innerHTML = ""
+      this.task = ''
+      this.showAlert = false
     } else {
-      this.showAlert()
+      this.showAlert = true
     }
   }
 
@@ -90,9 +85,9 @@ export class TodoList extends LitElement {
         <input type="text" .value=${this.task} @input=${this.handleInput} @keypress=${this.handleKeyPress} />        
         <button class="ToDo-Add" @click=${this.createNewItem} >Dodaj</button>
       </div>
-      <div class="alertBox">  
-        <span class="alert"></span>
-      </div>  
+      ${this.showAlert ? html`<div class="alertBox">  
+        <span class="alert">Uzupełnij pole</span>
+      </div>` : ''}  
       <button @click="${this.sort}">Sortuj</button>
     `;
   }
